@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from database import get_db
 import schemas
@@ -8,20 +9,35 @@ from utils import verify_password, hash_password
 import oauth2
 
 
+templates = Jinja2Templates(directory="templates")
 router = APIRouter(
     tags = ['Authentification']   
 )
 
+
+@router.get('/login')
+async def login_page(request: Request):
+    return templates.TemplateResponse(name="login.html", context={"request": request})
+
 @router.post('/login', response_model=schemas.Token)
-async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+async def login(
+    request: Request,
+    response: Response,            
+    user_credentials: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+    ):
+    
+    ############################
     user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
-    
     if not verify_password(user_credentials.password, user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
+    ############################
+    
     
     access_token = oauth2.create_access_token(data={"user_email": user.email, "user_id": user.id})
+    response.set_cookie(key="access_token", value=access_token)
     
     return {'access_token': access_token, 'token_type': 'bearer'}
 
