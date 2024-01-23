@@ -21,7 +21,6 @@ async def login_page(request: Request):
 
 @router.post('/login', response_model=schemas.Token)
 async def login(
-    request: Request,
     response: Response,            
     user_credentials: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
