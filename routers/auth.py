@@ -19,6 +19,7 @@ router = APIRouter(
 
 @router.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
+    # make it so that it first checks the cookies if found no need to log in if not found must log in
     global logged_in
     if logged_in:
         return templates.TemplateResponse(name="home.html", context={"request": request})
@@ -96,8 +97,10 @@ async def change_password(new_password: schemas.UserPasswordChange, current_user
     return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
 
 @router.get("/logout")
-async def logout(response: Response):
+async def logout(response: Response, request: Request):
     global logged_in
     logged_in = False
+    response = templates.TemplateResponse(name="is_logged_in.html", context={"request": request})
     response.delete_cookie(key="access_token")
-    return {"message": "Logout successful"}
+
+    return response
