@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>STORE</h1>
+    {% for package in packages %}
+        <h2>{{ package.name }}</h2>
+        <p>{{ package.price }}</p>
+        <form method="post" action="/store/{{ package.id }}">
+            <input type="hidden" name="package_id" value="{{ package.id }}">
+            <button type="submit">Add to Cart</button>
+        </form>
+    {% endfor %}
+</body>
+</html>

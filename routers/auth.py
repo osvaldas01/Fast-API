@@ -8,8 +8,7 @@ import models
 from utils import verify_password, hash_password
 import oauth2
 from fastapi.responses import RedirectResponse, Response
- 
- 
+from typing import Dict
  
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(
@@ -35,7 +34,33 @@ async def login_page(request: Request):
  
 @router.post('/login', response_model=schemas.Token)
 async def login(
-    response: Response,            
+    response: Response,       
+    request: Request,     
+    user_credentials: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+    ):
+   
+    ############################
+    user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
+    if not verify_password(user_credentials.password, user.password):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
+    ############################
+   
+   
+    access_token = oauth2.create_access_token(data={"user_email": user.email, "user_id": user.id})
+    response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    response.set_cookie(key="access_token", value=access_token)
+   
+   
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.post('/login_form', response_model=schemas.Token)
+async def login_form(
+response: Response,       
+    request: Request,     
     user_credentials: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
     ):
@@ -55,6 +80,7 @@ async def login(
    
    
     return response
+
  
 @router.post("/register", response_model=schemas.UserRegister)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
