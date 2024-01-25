@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -16,11 +16,17 @@ router = APIRouter(
     tags = ['Authentification']   
 )
 
-@router.get("/", response_class=HTMLResponse)
-async def read_root():
-    with open("templates/home.html", "r") as file:
-        html_content = file.read()
-    return HTMLResponse(content=html_content, status_code=200)
+@router.get("/")
+def read_root(request: Request):
+    cookie = request.cookies.get("access_token")
+    if not cookie:
+        return templates.TemplateResponse(name="index.html", context={"request": request})
+    else:
+        try:
+            oauth2.verify_access_token(cookie, credentials_exception=HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials"))
+            return templates.TemplateResponse(name="home.html", context={"request": request})
+        except:
+            return templates.TemplateResponse(name="index.html", context={"request": request})
 
 
 @router.get('/login')
@@ -44,9 +50,11 @@ async def login(
     
     
     access_token = oauth2.create_access_token(data={"user_email": user.email, "user_id": user.id})
+    response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     response.set_cookie(key="access_token", value=access_token)
     
-    return {'access_token': access_token, 'token_type': 'bearer'}
+    
+    return response
 
 @router.post("/register", response_model=schemas.UserRegister)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
