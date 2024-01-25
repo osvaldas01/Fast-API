@@ -7,7 +7,7 @@ import schemas
 import models
 from utils import verify_password, hash_password
 import oauth2
-from fastapi.responses import RedirectResponse, HTMLResponse, Response
+from fastapi.responses import RedirectResponse, Response
  
  
  
