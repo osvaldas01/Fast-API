@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -81,31 +81,34 @@ response: Response,
    
     return response
 
+@router.get('/register')
+async def register_page(request: Request):
+    return templates.TemplateResponse(name="register.html", context={"request": request})
  
-@router.post("/register", response_model=schemas.UserRegister)
-async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    hashed_password = hash_password(user.password)
-    user.password = hashed_password
-    new_user = models.User(**user.model_dump())
-    try:
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-    except:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"User with this email already exists")
-   
-    return new_user
+@router.post("/register", response_model=schemas.UserOut)
+async def create_user(email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+
+    hashed_password = hash_password(password)
+    password = hashed_password
+    new_user = models.User(email=email, password=password)
+    db.add(new_user)
+    db.commit()    
+    return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
+
+@router.get('/change_password')
+async def change_password_page(request: Request):
+    return templates.TemplateResponse(name="change_password.html", context={"request": request})
  
 @router.post('/change_password', response_model=schemas.UserOutAfterPasswordChange)
-async def change_password(new_password: schemas.UserPasswordChange, current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
+async def change_password(new_password: str = Form(...), current_password: str = Form(...), current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == current_user.id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
    
-    if not verify_password(new_password.current_password, user.password):
+    if not verify_password(current_password, user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Wrong password")
    
-    user.password = hash_password(new_password.new_password)
+    user.password = hash_password(new_password)
     try:
         db.commit()
         db.refresh(user)

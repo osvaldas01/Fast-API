@@ -3,54 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Store</title>
+    <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
-    <h1>STORE</h1>
-    {% for package in packages %}
-        <h2>{{ package.name }}</h2>
-        <p>{{ package.price }}</p>
-        {% if package in current_user.advert_packages %}
-            <p>Already Owned</p>
-        {% else %}
-            <form method="post" action="/store/{{ package.id }}" onsubmit="event.preventDefault(); buyPackage(event)">
-                <input type="hidden" name="package_id" value="{{ package.id }}">
-                <button type="submit" id="buyButton">BUY PACKAGE</button>
-            </form>
-        {% endif %}
-    {% endfor %}
-
-    <script>
-        function buyPackage(event) {
-            let form = event.target;
-            let formData = new FormData(form);
-            let packageId = formData.get('package_id');
-            let buyButton = document.getElementById('buyButton');
-            let url = `/store/${packageId}`;
-            let request = new Request(url, {
-                method: 'POST',
-                body: formData
-            });
-            fetch(request)
-                .then(response => {
-                    if (response.status === 403) {
-                        alert("You don't have enough credits.");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    if (data.message == "Package bought successfully") {
-                        buyButton.remove();
-                        let p = document.createElement('p');
-                        p.innerText = "Already Owned";
-                        form.appendChild(p);
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        }
-    </script>
+    <div>
+        <nav class="nav-bar">
+            <a href="/"><h2>Home</h2></a>
+            <a href="/users">View User</a>
+            <a href="/store">Store</a>
+            <a href="/change_password">change_password</a>
+            <a href="/logout">Logout</a>
+        </nav>  
+        <div>
+            <h1>STORE</h1>
+            {% for package in packages %}
+                <h2>{{ package.name }}</h2>
+                <p>{{ package.price }}</p>
+                {% if package in current_user.advert_packages %}
+                    <p>Already Owned</p>
+                {% else %}
+                    <form method="post" action="/store/{{ package.id }}" onsubmit="event.preventDefault(); buyPackage(event)">
+                        <input type="hidden" name="package_id" value="{{ package.id }}">
+                        <button type="submit" id="buyButton">BUY PACKAGE</button>
+                    </form>
+                {% endif %}
+            {% endfor %}
+        
+            <script>
+                function buyPackage(event) {
+                    let form = event.target;
+                    let formData = new FormData(form);
+                    let packageId = formData.get('package_id');
+                    let buyButton = document.getElementById('buyButton');
+                    let url = `/store/${packageId}`;
+                    let request = new Request(url, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    fetch(request)
+                        .then(response => {
+                            if (response.status === 403) {
+                                alert("You don't have enough credits.");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(data);
+                            if (data.message == "Package bought successfully") {
+                                buyButton.remove();
+                                let p = document.createElement('p');
+                                p.innerText = "Already Owned";
+                                form.appendChild(p);
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            </script>
+        </div>
+    </div>
 </body>
 </html>
