@@ -1,3 +1,4 @@
 dontuploadcredentials.py
 .venv
 __pycache__
+templates

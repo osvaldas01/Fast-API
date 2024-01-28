@@ -65,6 +65,10 @@ class CarAdvert(BaseModel):
     
     class Config:
         from_attributes = True
+        
+class IndexedCarAdvert(BaseModel):
+    index: int
+    car: CarAdvert
 
 class Car(BaseModel):
     Marke: str = None

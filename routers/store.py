@@ -23,7 +23,6 @@ async def get_packages(request: Request,current_user: int = Depends(oauth2.get_c
     for advert_package in packages:
         if advert_package in current_user.advert_packages:
             user_packages.append(advert_package)
-
     return templates.TemplateResponse(name="store.html", context={"request": request, "packages": packages, "user_packages": user_packages, "current_user": current_user})
 
 @router.post('/{advert_package_id}')

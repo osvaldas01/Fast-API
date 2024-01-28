@@ -9,11 +9,14 @@
 <body>
     <div>
         <nav class="nav-bar">
-            <a href="/"><h2>Home</h2></a>
-            <a href="/users">View User</a>
-            <a href="/store">Store</a>
-            <a href="/change_password">change_password</a>
-            <a href="/logout">Logout</a>
+            {% if current_user %}
+                <p>Logged in as: {{ current_user.email }}</p>
+                <p>Balance: {{ current_user.credits }} credits</p>
+            {% endif %}
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="/logout/">Logout</a>
         </nav>  
         <div>
             <h1>STORE</h1>

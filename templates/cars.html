@@ -6,6 +6,25 @@
     <title>Document</title>
 </head>
 <body>
-    cars
+    {% for car in cars %}
+        <div>
+            <h2>{{ car.car.Marke }} {{ car.car.Modelis }}</h2>
+            <p>Telefono nr: {{ car.car.Telefono_nr }}</p>
+            <p>Kontakto vardas: {{ car.car.Kontakto_vardas }}</p>
+            <p>Miestas: {{ car.car.Miestas }}</p>
+            <p>Kaina: {{ car.car.Kaina }}</p>
+            <p>Metai: {{ car.car.Metai }}</p>
+            <p>Pirma registracija: {{ car.car.Pirma_registracija }}</p>
+            <p>Variklis: {{ car.car.Variklis }}</p>
+            <p>Kebulas: {{ car.car.Kebulas }}</p>
+            <p>Ratai: {{ car.car.Ratai }}</p>
+            <p>Klimatas: {{ car.car.Klimatas }}</p>
+            <p>Defektai: {{ car.car.Defektai }}</p>
+            <p>Rida: {{ car.car.Rida }}</p>
+            <p>Kuras: {{ car.car.Kuras }}</p>
+            <p>Deze: {{ car.car.Deze }}</p>
+            <p>Spalva: {{ car.car.Spalva }}</p>
+        </div>
+    {% endfor %}
 </body>
 </html>

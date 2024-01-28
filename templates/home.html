@@ -7,15 +7,18 @@
 </head>
 <body>
     <div>
-        <nav>
-        <a href="/" class="home"><h2>Home</h2></a>
-        <a href="/users">View User</a>
-        <a href="/store">Store</a>
-        <a href="/change_password">change_password</a>
-        <a href="/logout">Logout</a>
-    </nav>
+        <nav class="nav-bar">
+        <div>
+            {% if user %}
+                <p>Logged in as: {{ user }}</p>
+            {% endif %}
+        </div>
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="/logout/">Logout</a>
+        </nav>
     </div>
-
 </body>
 </html>
 

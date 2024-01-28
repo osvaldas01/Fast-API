@@ -22,8 +22,8 @@ def read_root(request: Request):
         return templates.TemplateResponse(name="index.html", context={"request": request})
     else:
         try:
-            oauth2.verify_access_token(cookie, credentials_exception=HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials"))
-            return templates.TemplateResponse(name="home.html", context={"request": request})
+            a = oauth2.verify_access_token(cookie, credentials_exception=HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials"))
+            return templates.TemplateResponse(name="home.html", context={"request": request, "user": a.user_email})
         except:
             return templates.TemplateResponse(name="index.html", context={"request": request})
  

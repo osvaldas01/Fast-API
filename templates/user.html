@@ -7,19 +7,23 @@
 </head>
 <header>
     <nav class="nav-bar">
-        <a href="/"><h2>Home</h2></a>
-        <a href="/users">View User</a>
-        <a href="/store">Store</a>
-        <a href="/change_password">change_password</a>
-        <a href="/logout">Logout</a>
+        {% if current_user %}
+            <p>Logged in as: {{ current_user.email }}</p>
+            <p>Balance: {{ current_user.credits }}</p>
+        {% endif %}
+        <a href="/" class="home"><h2>Home</h2></a>
+        <a href="/users/">View User</a>
+        <a href="/store/">Store</a>
+        <a href="/logout/">Logout</a>
     </nav>  
 </header>
 <body>
-    <h1>Owned Packages</h1>
+    <h2>Owned Packages:</h2>
     {% for package in packages %}
-    <li>
-        <p>Model: {{ package.name }}</p>
-    </li>
+        <li>
+            Model: {{ package.name }}
+        </li>
         {% endfor %}
+    <a href="/change_password/">Change Password</a>
 </body>
 </html>
