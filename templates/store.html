@@ -10,15 +10,19 @@
     <div>
         <nav class="nav-bar">
             {% if current_user %}
-                <p>Logged in as: {{ current_user.email }}</p>
-                <p>Balance: {{ current_user.credits }} credits</p>
+                <b>Logged in as: {{ current_user.email }}</b>
+                {% if current_user.credits %}
+                    <b>Balance: {{ current_user.credits }} credits</b>
+                {% else %}
+                    <b>Balance: 0 credits</b>
+                {% endif %}
             {% endif %}
             <a href="/" class="home"><h2>Home</h2></a>
             <a href="/users/">View User</a>
             <a href="/store/">Store</a>
             <a href="/logout/">Logout</a>
         </nav>  
-        <div>
+        <div class="store">
             <h1>STORE</h1>
             {% for package in packages %}
                 <h2>{{ package.name }}</h2>
@@ -34,7 +38,7 @@
             {% endfor %}
         
             <script>
-                function buyPackage(event) {
+                async function buyPackage(event) {
                     let form = event.target;
                     let formData = new FormData(form);
                     let packageId = formData.get('package_id');
@@ -44,14 +48,12 @@
                         method: 'POST',
                         body: formData
                     });
-                    fetch(request)
-                        .then(response => {
-                            if (response.status === 403) {
-                                alert("You don't have enough credits.");
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
+                    try {
+                        const response = await fetch(request);
+                        if (response.status === 403) {
+                            alert("You don't have enough credits.");
+                        } else {
+                            const data = await response.json();
                             console.log(data);
                             if (data.message == "Package bought successfully") {
                                 buyButton.remove();
@@ -59,10 +61,11 @@
                                 p.innerText = "Already Owned";
                                 form.appendChild(p);
                             }
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
+                            location.reload(); // Refresh the page
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
             </script>
         </div>

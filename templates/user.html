@@ -1,3 +1,5 @@
+<!-- FILEPATH: /Users/osvaldasgapsys/Desktop/BackEndBandymas-master/templates/user.html -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -5,25 +7,27 @@
     <title>User</title>
     <link rel="stylesheet" href="../static/styles.css">
 </head>
-<header>
-    <nav class="nav-bar">
-        {% if current_user %}
-            <p>Logged in as: {{ current_user.email }}</p>
-            <p>Balance: {{ current_user.credits }}</p>
-        {% endif %}
-        <a href="/" class="home"><h2>Home</h2></a>
-        <a href="/users/">View User</a>
-        <a href="/store/">Store</a>
-        <a href="/logout/">Logout</a>
-    </nav>  
-</header>
 <body>
-    <h2>Owned Packages:</h2>
-    {% for package in packages %}
+    <header>
+        <nav class="nav-bar">
+            {% if current_user %}
+                <b>Logged in as: {{ current_user.email }}</b>
+                <b>Balance: {{ current_user.credits }} credits</b>
+            {% endif %}
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="/logout/">Logout</a>
+        </nav>  
+    </header>
+    <div class="user">
+        <h2>Owned Packages:</h2>
         <li>
-            Model: {{ package.name }}
+            {% for package in packages %}
+            <p>Model: <a href="../cars/?car_make={{ package.name }}">{{ package.name }} </p></a>
+            {% endfor %}
         </li>
-        {% endfor %}
-    <a href="/change_password/">Change Password</a>
+        <a href="/change_password/">Change Password</a>   
+    </div>
 </body>
 </html>

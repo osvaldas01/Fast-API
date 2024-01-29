@@ -45,6 +45,7 @@ class TokenData(BaseModel):
     user_id: Optional[int] = None
 
 class CarAdvert(BaseModel):
+    Skelbimo_id: int
     Marke: str = None
     Modelis: str = None
     Telefono_nr: str = None
