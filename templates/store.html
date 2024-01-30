@@ -23,21 +23,52 @@
             <a href="/logout/">Logout</a>
         </nav>  
         <div class="store">
-            <h1>STORE</h1>
+            
             {% for package in packages %}
-                <h2>{{ package.name }}</h2>
-                <p>{{ package.price }}</p>
-                {% if package in current_user.advert_packages %}
-                    <p>Already Owned</p>
-                {% else %}
-                    <form method="post" action="/store/{{ package.id }}" onsubmit="event.preventDefault(); buyPackage(event)">
-                        <input type="hidden" name="package_id" value="{{ package.id }}">
-                        <button type="submit" id="buyButton">BUY PACKAGE</button>
-                    </form>
-                {% endif %}
+                <div class="package">
+                    <h2>{{ package.name }}</h2>
+                    <p>{{ package.price }}</p>
+                    {% if package in current_user.advert_packages %}
+                        <p>Already Owned</p>
+                    {% else %}
+                        <form method="post" action="/store/{{ package.id }}" onsubmit="event.preventDefault(); buyPackage(event)">
+                            <input type="hidden" name="package_id" value="{{ package.id }}">
+                            <button type="submit" id="buyButton">BUY PACKAGE</button>
+                        </form>
+                    {% endif %}
+                </div>
             {% endfor %}
-        
+        <div class="creditstore">
+            <form method="post" action="./buycredits/" onsubmit="event.preventDefault(); buyCredits(event)">
+                <select name="credits">
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                    <option value="5000">5000</option>
+                </select>
+                <button type="submit">Buy Credits</button>
+            </form>
+        </div>
             <script>
+                async function buyCredits(event) {
+                    let form = event.target;
+                    let formData = new FormData(form);
+                    let url = form.action;
+                    let request = new Request(url, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    try {
+                        const response = await fetch(request);
+                        if (response.status === 200) {
+                            const data = await response.json();
+                            console.log(data.message);
+                        }
+                        location.reload();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
                 async function buyPackage(event) {
                     let form = event.target;
                     let formData = new FormData(form);

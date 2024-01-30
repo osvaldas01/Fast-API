@@ -6,28 +6,43 @@
     <title>Document</title>
     <link rel="stylesheet" href="../static/styles.css">
 </head>
+
 <body>
-    <div class="car">
-        <div class="car-images">
-            {% for i in range(1, num_of_pictures + 1) %}
-            <img src="/static/Skelbimu_images/{{ car.Skelbimo_id }}/{{ i }}.jpg" alt="Car Image" class="slide">
-            {% endfor %}
-        </div>
-        <div class="controls">
-            <button onclick="prevSlide()">Previous</button>
-            <button onclick="nextSlide()">Next</button>
-            <button onclick="playSlideshow()" id="playButton">Play</button>
-            <button onclick="pauseSlideshow()">Pause</button>
-        </div>
-        <div class="car-info">
-            <h2>{{ car.Marke }} {{ car.Modelis }}</h2>
-            <p>Telefono nr: {{ car.Telefono_nr }}</p>
-            <p>Miestas: {{ car.Miestas }}</p>
-            <p>Kaina: {{ car.Kaina }} €</p>
-            <p>Metai: {{ car.Metai }}</p>
-            <p>Variklis: {{ car.Variklis }}</p>
-            <p>Kebulas: {{ car.Kebulas }}</p>
-            <p>Rida: {{ car.Rida }} km</p>
+    <header>
+        <nav class="nav-bar">
+            {% if current_user %}
+                <b>Logged in as: {{ current_user.email }}</b>
+                <b>Balance: {{ current_user.credits }} credits</b>
+            {% endif %}
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="/logout/">Logout</a>
+        </nav>  
+    </header>
+    <div class = "carBody">
+        <div class="car">
+            <div class="car-images">
+                {% for i in range(1, num_of_pictures + 1) %}
+                <img src="/static/Skelbimu_images/{{ car.Skelbimo_id }}/{{ i }}.jpg" alt="Car Image" class="slide">
+                {% endfor %}
+            </div>
+            <div class="controls">
+                <button onclick="prevSlide()">Previous</button>
+                <button onclick="nextSlide()">Next</button>
+                <button onclick="playSlideshow()" id="playButton">Play</button>
+                <button onclick="pauseSlideshow()">Pause</button>
+            </div>
+            <div class="car-info">
+                <h2>{{ car.Marke }} {{ car.Modelis }}</h2>
+                <p>Telefono nr: {{ car.Telefono_nr }}</p>
+                <p>Miestas: {{ car.Miestas }}</p>
+                <p>Kaina: {{ car.Kaina }} €</p>
+                <p>Metai: {{ car.Metai }}</p>
+                <p>Variklis: {{ car.Variklis }}</p>
+                <p>Kebulas: {{ car.Kebulas }}</p>
+                <p>Rida: {{ car.Rida }} km</p>
+            </div>
         </div>
     </div>
 

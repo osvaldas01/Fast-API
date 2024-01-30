@@ -6,21 +6,50 @@
     <title>Document</title>
     <link rel="stylesheet" href="../static/styles.css">
 </head>
-<body class="cars">
-    {% for car in cars %}
-    <a href="../cars/{{ car.Skelbimo_id }}">
-        <div class="card">
-            <img src="/static/Skelbimu_images/{{ car.Skelbimo_id }}/1.jpg" alt="Car Image">
-            <h2>{{ car.Marke }} {{ car.Modelis }}</h2>
-            <p>Telefono nr: {{ car.Telefono_nr }}</p>
-            <p>Miestas: {{ car.Miestas }}</p>
-            <p>Kaina: {{ car.Kaina }} €</p>
-            <p>Metai: {{ car.Metai }}</p>
-            <p>Variklis: {{ car.Variklis }}</p>
-            <p>Kebulas: {{ car.Kebulas }}</p>
-            <p>Rida: {{ car.Rida }} km</p>
-        </div>
-    </a>
-    {% endfor %}
+<body>
+    <header>
+        <nav class="nav-bar">
+            {% if current_user %}
+                <b>Logged in as: {{ current_user.email }}</b>
+                <b>Balance: {{ current_user.credits }} credits</b>
+            {% endif %}
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="/logout/">Logout</a>
+        </nav>  
+    </header>
+    <div class ="cars">
+        {% for car in cars %}
+        <a href="../cars/{{ car.Skelbimo_id }}">
+            <div class="card">
+                <img src="/static/Skelbimu_images/{{ car.Skelbimo_id }}/1.jpg">
+                <h2>{{ car.Marke }} {{ car.Modelis }}</h2>
+                <p>Miestas: {{ car.Miestas }}</p>
+                {% if car.Telefono_nr == 'none' %}
+                <b class="sold">SOLD</b>
+                {% else %}
+                <p>Telefono nr: {{ car.Telefono_nr }}</p>
+                <p>Kaina: {{ car.Kaina }} €</p>
+                {% endif %}
+                <p>Metai: {{ car.Metai }}</p>
+                <p>Variklis: {{ car.Variklis }}</p>
+                <p>Kebulas: {{ car.Kebulas }}</p>
+                <p>Rida: {{ car.Rida }} km</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="pages">
+        {% for page in range(pages_amount) %}
+            <a class="pageNumbers" href="../cars/?car_make={{ car_make }}&page={{ page+1 }}">
+                <button class = "pageButton">
+                    <div class="page">
+                        <b>{{ page+1 }}</b>
+                    </div>
+                </button>
+            </a>
+        {% endfor %}
+    </div>
 </body>
 </html>

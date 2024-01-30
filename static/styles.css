@@ -46,6 +46,8 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
 }
 
 button:hover {
@@ -64,11 +66,22 @@ button:hover {
 }
 
 /* Change password section */
-.change_password, .store, .user, .login, .break, .register {
+.change_password, .user, .login, .break, .register {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.store{
+    display: flex;
+    flex-direction: row;
     margin: 10px;
     padding: 20px;
     border: 1px solid #000000;
@@ -117,11 +130,6 @@ a:hover {
 .middle {
     text-align: center;
 }
-
-b {
-    color: gray;
-}
-
 /* Container styles */
 .container {
     margin: 0 auto;
@@ -213,10 +221,41 @@ b {
     }
 }
 
+div.car{
+    margin: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #000000;
+    display: flex;
+    width: 34%;
+    object-fit: cover;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .cars{
+    margin-left:10%;
+    width: 80%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+div.carBody{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.package{
+    display:flex;
+    width: 200px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 .login-page {
@@ -277,17 +316,52 @@ input{
 }
 
 .car-images img.slide {
-    width: 500px; /* Adjust the width as per your requirement */
-    height: 400px; /* Adjust the height as per your requirement */
+    margin-top: 10px;
+    width: 700px; /* Adjust the width as per your requirement */
+    height: 550px; /* Adjust the height as per your requirement */
     object-fit: cover;
+    border: #000000 1px solid;
+    box-shadow: grey 5px 5px 20px 5px;
 }
 
 .controls {
     justify-content: center;
     align-items: center;
     display: flex;
+    padding:10px;
+}
+
+.controls button{
+    margin:5px;
 }
 
 .car-info {
     text-align: center;
 }
+
+div.pages{
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pageButton{
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding:20px;
+}
+
+b.sold{
+    color:red;
+    font-size: xx-large;
+}
+
+b{
+    color:white;
+}
+

@@ -33,10 +33,12 @@ async def get_car_info(
     current_user: int = Depends(oauth2.get_current_user)
 ):
     offset = (page - 1) * limit
-    cars = db.query(models.CarAdverts).filter(models.CarAdverts.Marke == car_make)
+    cars = db.query(models.CarAdverts).filter(models.CarAdverts.Marke.ilike(car_make))
 
     if car_model:
-        cars = cars.filter(models.CarAdverts.Modelis == car_model)
+        cars = cars.filter(models.CarAdverts.Modelis.ilike(car_model))
+        
+    pages_amount = cars.count() / limit
 
     cars = cars.offset(offset).limit(limit).all()
 
@@ -46,4 +48,4 @@ async def get_car_info(
             detail=f"Car with make {car_make} and model {car_model} not found"
         )
 
-    return templates.TemplateResponse(name="cars.html", context={"request": request, "cars": cars})
+    return templates.TemplateResponse(name="cars.html", context={"request": request, "cars": cars, "pages_amount": int(round(pages_amount)), "car_make": car_make, "current_user": current_user})
