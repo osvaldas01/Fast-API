@@ -48,4 +48,4 @@ async def get_car_info(
             detail=f"Car with make {car_make} and model {car_model} not found"
         )
 
-    return templates.TemplateResponse(name="cars.html", context={"request": request, "cars": cars, "pages_amount": int(round(pages_amount)), "car_make": car_make, "current_user": current_user})
+    return templates.TemplateResponse(name="cars.html", context={"request": request, "cars": cars})

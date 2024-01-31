@@ -50,16 +50,3 @@ async def buy_advert_package(advert_package_id: int, current_user: int = Depends
     db.refresh(user)
 
     return {"message": "Package bought successfully"}
-
-@router.post('/buycredits/')
-async def buy_credits(credits: int = Form(...), current_user: int = Depends(oauth2.get_current_user), db: Session=Depends(get_db)):
-    print(credits)
-    user = db.query(models.User).filter(models.User.id == current_user.id).first()
-    print(user)
-    
-    user.credits += credits
-    
-    db.commit()
-    db.refresh(user)
-
-    return {"message": "Credits bought successfully"}
