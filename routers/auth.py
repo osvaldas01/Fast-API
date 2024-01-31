@@ -9,6 +9,7 @@ from utils import verify_password, hash_password
 import oauth2
 from fastapi.responses import RedirectResponse, Response
 from typing import Dict
+from .car import get_car_makes, get_car_models
  
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(
@@ -18,6 +19,7 @@ router = APIRouter(
 @router.get("/")
 def read_root(request: Request):
     cookie = request.cookies.get("access_token")
+
     if not cookie:
         return templates.TemplateResponse(name="index.html", context={"request": request})
     else:

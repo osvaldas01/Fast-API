@@ -1,3 +1,5 @@
+<!-- FILEPATH: /Users/osvaldasgapsys/Desktop/BackEndBandymas-master/templates/home.html -->
+<!-- BEGIN: abpxx6d04wxr -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,6 +21,45 @@
             <a href="/logout/">Logout</a>
         </nav>
     </div>
+
+        <select id="carMakeSelect"></select>
+        <button type="submit" onclick="search()">Search</button>
+
+
+    <script>
+        async function fetchCarMakes() {
+            try {
+                const response = await fetch('cars/makes');
+                const jsonData = await response.json();
+                
+                return jsonData;
+            } catch (error) {
+                console.error('Error fetching car makes:', error);
+            }
+        }
+
+        async function populateSelect() {
+            var selectElement = document.getElementById("carMakeSelect");
+            const carMakes = await fetchCarMakes();
+
+            if (carMakes) {
+                carMakes.forEach(function (car) {
+                    var option = document.createElement("option");
+                    option.value = car.Marke;
+                    option.text = car.Marke;
+                    selectElement.appendChild(option);
+                });
+            }
+        }
+
+        function search() {
+            var selectedMake = document.getElementById("carMakeSelect").value;
+            window.location.href = "cars/?car_make=" + selectedMake;
+        }
+        populateSelect();
+    </script>
+
+
 </body>
 </html>
 

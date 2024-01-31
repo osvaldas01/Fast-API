@@ -38,7 +38,17 @@
                     {% endif %}
                 </div>
             {% endfor %}
-        
+        <div class="creditstore">
+            <form method="post" action="./buycredits/" onsubmit="event.preventDefault(); buyCredits(event)">
+                <select name="credits">
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                    <option value="5000">5000</option>
+                </select>
+                <button type="submit">Buy Credits</button>
+            </form>
+        </div>
             <script>
                 async function buyCredits(event) {
                     let form = event.target;

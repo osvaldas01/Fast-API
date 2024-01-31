@@ -73,4 +73,6 @@ class IndexedCarAdvert(BaseModel):
 
 class Car(BaseModel):
     Marke: str = None
-    Modelis: Optional[str] = None
+
+class CarModel(BaseModel):
+    Modelis: str = None
