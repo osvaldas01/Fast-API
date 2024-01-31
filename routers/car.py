@@ -16,10 +16,9 @@ router = APIRouter(
 @router.get('/makes', response_model=List[schemas.Car])
 async def get_car_makes(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     makes = db.query(models.CarAdverts.Marke).distinct().all()
-    current_user = db.query
     return makes
 
-@router.get('/models', response_model=List[schemas.CarModel])
+@router.get('/models/', response_model=List[schemas.CarModel])
 async def get_car_models(make: str, db: Session = Depends(get_db)):
     modelis = db.query(models.CarAdverts.Modelis).filter(models.CarAdverts.Marke.ilike(make)).distinct().all()
     return modelis
@@ -41,7 +40,7 @@ async def get_car_info(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
     year_from: int = Query(None, ge=1900),
-    year_to: int = Query(None, le=2022),
+    year_to: int = Query(None, le=2024),
     price_from: float = Query(None, ge=0),
     price_to: float = Query(None, ge=0),
     mileage_from: int = Query(None, ge=0),
@@ -49,6 +48,13 @@ async def get_car_info(
     page: int = Query(1, ge=1),
 
 ):
+    
+    found = any(car_make.lower() == package.name.lower() for package in current_user.advert_packages)
+    if not found:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"You do not own this package"
+        )
     
     limit = 8
     offset = (page - 1) * limit
