@@ -20,12 +20,18 @@
             <a href="/logout/">Logout</a>
         </nav>
     </div>
+    <div class="SearchCar">
 
+    <h1>Search for a car</h1>
+    <label for="carMakeSelect">Make:</label>
     <select id="carMakeSelect" onchange="fetchAndPopulateModels()">
     </select>
+    <label for="carModelSelect">Model:</label>
     <select id="carModelSelect">
         <option value="all">-</option>
     </select>
+    <label for="carPriceSelectFrom">Price:</label>
+    <br>
     <select id="carPriceSelectFrom">
         <option value="all">-</option>
         <option value="500">500</option>
@@ -44,6 +50,9 @@
         <option value="20000">20000</option>
         <option value="50000">50000</option>
     </select>
+    <br>
+    <label for="carMileageSelectFrom">Mileage:</label>
+    <br>
     <select id="carMileageSelectFrom">
         <option value="all">-</option>
         <option value="50000">50000</option>
@@ -58,16 +67,22 @@
         <option value="200000">200000</option>
         <option value="300000">300000</option>
     </select>
+    <br>
+    <label for="carYearSelectFrom">Year:</label>
+    <br>
     <select id="carYearSelectFrom">
         <option value="all">-</option>
     </select>
     <select id="carYearSelectTo">
         <option value="all">-</option>
     </select>
-    
+    <br>
+    <br>
     
     
     <button type="submit" onclick="search()">Search</button>
+
+</div>
 
     <script>
         function populateYearSelect() {
@@ -157,25 +172,23 @@
             var selectedMileageTo = document.getElementById("carMileageSelectTo").value;
             var selectedYearFrom = document.getElementById("carYearSelectFrom").value;
             var selectedYearTo = document.getElementById("carYearSelectTo").value;
-        
+       
             var url;
-            if (selectedModel == "all") 
+            if (selectedModel == "all")
             {
                 url = "cars/?car_make=" + selectedMake;
-            } 
-            else 
+            }
+            else
             {
                 url = "cars/?car_make=" + selectedMake + "&car_model=" + selectedModel;
             }
-            a = console.log(url)
-            addParameterIfExists(url, "price_from", selectedPriceFrom);
-            console.log(url)
-            addParameterIfExists(url, "price_to", selectedPriceTo);
-            addParameterIfExists(url, "mileage_from", selectedMileageFrom);
-            addParameterIfExists(url, "mileage_to", selectedMileageTo);
-            addParameterIfExists(url, "year_from", selectedYearFrom);
-            addParameterIfExists(url, "year_to", selectedYearTo);
-        
+            url = addParameterIfExists(url, "price_from", selectedPriceFrom);
+            url = addParameterIfExists(url, "price_to", selectedPriceTo);
+            url = addParameterIfExists(url, "mileage_from", selectedMileageFrom);
+            url = addParameterIfExists(url, "mileage_to", selectedMileageTo);
+            url = addParameterIfExists(url, "year_from", selectedYearFrom);
+            url = addParameterIfExists(url, "year_to", selectedYearTo);
+       
             fetch(url)
                 .then(response => {
                     if (response.status === 200) {
@@ -183,19 +196,19 @@
                     } else if (response.status === 403) {
                         alert("You do not own this package!");
                     } else {
-                        alert("An error occurred: " + response.status);
+                        alert("Car not found!");
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
                 });
         }
-        
+       
         function addParameterIfExists(url, paramName, paramValue) {
-            if (paramValue) {
+            if (paramValue && paramValue !== "all") {
                 url += "&" + paramName + "=" + paramValue;
             }
-            
+            return url;
         }
         populateSelect();
     </script>

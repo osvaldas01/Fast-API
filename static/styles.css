@@ -365,3 +365,24 @@ b{
     color:white;
 }
 
+#carMakeSelect, #carModelSelect{
+    display: flex;
+    width: 10%;
+    height: 30px;
+    border: 2px solid #000000;
+    background-color: rgba(255, 255, 255, 0.55);
+}
+
+#carPriceSelectFrom, #carPriceSelectTo, #carYearSelectFrom, #carYearSelectTo, #carMileageSelectFrom, #carMileageSelectTo{
+    width: 10%;
+    height: 30px;
+    border: 2px solid #000000;
+    background-color: rgba(255, 255, 255, 0.55);
+}
+
+
+label{
+    font-size: 20px;
+    margin-top: 10px;   
+    padding: 5px;
+}
