@@ -24,3 +24,5 @@ def get_user(request: Request, db: Session = Depends(get_db), current_user: int 
         
     return templates.TemplateResponse("user.html", {"request": request, "packages": packages, "current_user": current_user})
 
+
+
