@@ -1,6 +1,5 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from datetime import datetime
 
 class AdvertPackage(BaseModel):
     name: str
@@ -9,10 +8,6 @@ class AdvertPackage(BaseModel):
     class Config:
         from_attributes = True
 
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-        
 class UserOut(BaseModel):
     email: EmailStr
     credits: int
@@ -21,20 +16,10 @@ class UserOut(BaseModel):
     class Config:
         from_attributes = True    
 
-class UserRegister(BaseModel):
-    email: EmailStr
-        
-class UserLogin(BaseModel):
-    email: EmailStr
-    password: str
     
 class UserOutAfterPasswordChange(BaseModel):
     email: EmailStr
     msg: str
-
-class UserPasswordChange(BaseModel):
-    current_password: str
-    new_password: str
     
 class Token(BaseModel):
     access_token: str
@@ -67,9 +52,6 @@ class CarAdvert(BaseModel):
     class Config:
         from_attributes = True
         
-class IndexedCarAdvert(BaseModel):
-    index: int
-    car: CarAdvert
 
 class Car(BaseModel):
     Marke: str = None

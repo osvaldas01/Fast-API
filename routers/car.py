@@ -14,20 +14,32 @@ router = APIRouter(
 )
 
 @router.get('/makes', response_model=List[schemas.Car])
-async def get_car_makes(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def get_car_makes(
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user)
+):
+    
     makes = db.query(models.CarAdverts.Marke).distinct().all()
     return makes
 
 @router.get('/models/', response_model=List[schemas.CarModel])
-async def get_car_models(make: str, db: Session = Depends(get_db)):
+async def get_car_models(
+    make: str,
+    db: Session = Depends(get_db)
+):
     modelis = db.query(models.CarAdverts.Modelis).filter(models.CarAdverts.Marke.ilike(make)).distinct().all()
     return modelis
 
 @router.get('/{car_id}', response_model=schemas.CarAdvert)
-async def get_car_info(car_id: int, request: Request, db: Session=Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def get_car_info(
+    car_id: int,
+    request: Request,
+    db: Session=Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user)
+):
+    
     car = db.query(models.CarAdverts).filter(models.CarAdverts.Skelbimo_id == str(car_id)).first()
     num_of_pictures = len(os.listdir(f"static/Skelbimu_Images/{car_id}"))
-    print(num_of_pictures)
     if not car:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Car with id {car_id} not found")
     return templates.TemplateResponse(name="car.html", context={"request": request, "car": car, "num_of_pictures": num_of_pictures})
@@ -46,11 +58,9 @@ async def get_car_info(
     mileage_from: int = Query(None, ge=0),
     mileage_to: int = Query(None, ge=0),
     page: int = Query(1, ge=1),
-
 ):
     
-    found = any(car_make.lower() == package.name.lower() for package in current_user.advert_packages)
-    if not found:
+    if not any(car_make.lower() == package.name.lower() for package in current_user.advert_packages):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"You do not own this package"
@@ -62,15 +72,17 @@ async def get_car_info(
 
     if car_model:
         cars = cars.filter(models.CarAdverts.Modelis.ilike(car_model))
-        
+
     if year_from:
         cars = cars.filter(models.CarAdverts.Metai >= year_from)
     if year_to:
         cars = cars.filter(models.CarAdverts.Metai <= year_to)
+
     if price_from:
         cars = cars.filter(models.CarAdverts.Kaina >= price_from)
     if price_to:
         cars = cars.filter(models.CarAdverts.Kaina <= price_to)
+
     if mileage_from:
         cars = cars.filter(models.CarAdverts.Rida >= mileage_from)
     if mileage_to:

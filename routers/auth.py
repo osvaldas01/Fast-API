@@ -1,15 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse, Response
 from sqlalchemy.orm import Session
 from database import get_db
+from pydantic import EmailStr
+from utils import verify_password, hash_password
 import schemas
 import models
-from utils import verify_password, hash_password
 import oauth2
-from fastapi.responses import RedirectResponse, Response
-from typing import Dict
-from .car import get_car_makes, get_car_models
  
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(
@@ -29,7 +28,6 @@ def read_root(request: Request):
         except:
             return templates.TemplateResponse(name="index.html", context={"request": request})
  
- 
 @router.get('/login')
 async def login_page(request: Request):
     return templates.TemplateResponse(name="login.html", context={"request": request})
@@ -42,16 +40,17 @@ async def login(
     db: Session = Depends(get_db)
     ):
    
-    ############################
     user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
+    
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
+    
     if not verify_password(user_credentials.password, user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
-    ############################
    
    
     access_token = oauth2.create_access_token(data={"user_email": user.email, "user_id": user.id})
+    
     response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     response.set_cookie(key="access_token", value=access_token)
    
@@ -67,19 +66,18 @@ async def login_form(
     db: Session = Depends(get_db)
     ):
    
-    ############################
     user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
+    
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
+    
     if not verify_password(user_credentials.password, user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid credentials")
-    ############################
-   
    
     access_token = oauth2.create_access_token(data={"user_email": user.email, "user_id": user.id})
+    
     response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     response.set_cookie(key="access_token", value=access_token)
-   
    
     return response
 
@@ -88,13 +86,22 @@ async def register_page(request: Request):
     return templates.TemplateResponse(name="register.html", context={"request": request})
  
 @router.post("/register", response_model=schemas.UserOut)
-async def create_user(email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+async def create_user(
+    email: EmailStr = Form(...),
+    password: str = Form(...),
+    db: Session = Depends(get_db)
+    ):
 
+    if db.query(models.User).filter(models.User.email == email).first():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists!")
+    
+    oauth2.check_password(password)
+    
     hashed_password = hash_password(password)
     password = hashed_password
     new_user = models.User(email=email, password=password)
     db.add(new_user)
-    db.commit()    
+    db.commit()
     return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
 
 @router.get('/change_password')
@@ -102,25 +109,37 @@ async def change_password_page(request: Request):
     return templates.TemplateResponse(name="change_password.html", context={"request": request})
  
 @router.post('/change_password', response_model=schemas.UserOutAfterPasswordChange)
-async def change_password(new_password: str = Form(...), current_password: str = Form(...), current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
+async def change_password(
+    new_password1: str = Form(...),
+    new_password2: str = Form(...),
+    current_password: str = Form(...),
+    current_user: int = Depends(oauth2.get_current_user),
+    db: Session = Depends(get_db)):
+    
     user = db.query(models.User).filter(models.User.id == current_user.id).first()
+    
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
    
     if not verify_password(current_password, user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Wrong password")
+    
+    if new_password1 != new_password2:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Passwords do not match")
+    
+    oauth2.check_password(new_password1)
    
-    user.password = hash_password(new_password)
+    user.password = hash_password(new_password1)
     try:
         db.commit()
-        db.refresh(user)
     except:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Something went wrong, please try again later!")
+    
     return schemas.UserOutAfterPasswordChange(email=user.email, msg="Password changed successfully")
  
 @router.get("/logout")
 async def logout(response: Response, request: Request):
+    
     response = templates.TemplateResponse(name="index.html", context={"request": request})
     response.delete_cookie(key="access_token")
-
     return response

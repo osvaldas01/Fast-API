@@ -7,6 +7,7 @@ from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from dontuploadcredentials import secret_key
+import re
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login", auto_error=False)
 SECRET_KEY = secret_key
@@ -57,3 +58,13 @@ def get_current_user(request: Request, token: str = Depends(oauth2_scheme), db: 
         raise credentials_exception
 
     return user
+
+def check_password(password: str):
+    
+    if len(password) < 8:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password must be at least 8 characters long")
+    
+    if not re.search(r'[A-Z]', password) or not re.search(r'\d', password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password must contain at least one capital letter and one number")
+    
+    return password

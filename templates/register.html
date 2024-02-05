@@ -11,12 +11,15 @@
 </head>
 <body class="register-page">
     <div class="register">
-        <form method="post" action="/register">
+        <form method="post" action="/register" id="registerForm">
             <label for="email">EMAIL</label>
             <input type="email" id="email" name="email" required>
             <label for="password">PASSWORD</label>
             <input type="password" id="password" name="password" required>
             <button type="submit">Register</button>
+        </form>
     </div>
-</body>
-</html>
+
+    <script src="../static/scripts/scripts_register.js"></script>
+    </body>
+    </html>
