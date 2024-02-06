@@ -1,0 +1,23 @@
+class xPath:
+    COOKIE_BUTTON = "//div/button[@id ='onetrust-reject-all-handler']"
+    LIST_ITEMS = "//div[@class='list-items']/a"
+    CONTACT_PHONE = "//a[@class='contact-button contact-phone js-contact-phone']"
+    CONTACT_NAME = "//div[@class='contact-name']"
+    CONTACT_LOCATION = "//div[@class='contact-location']"
+    MAIN_PRICE = "//div[@class='main-price']"
+    MAKE_DATE = "//span[@class='view-field view-i field_make_date']"
+    ORIGIN_COUNTRY_ID = "//span[@class='view-field view-i field_origin_country_id']"
+    ENGINE = "//span[@class='view-field view-i field_engine']"
+    BODY_TYPE_ID = "//span[@class='view-field view-i field_body_type_id']"
+    WHEEL_DRIVE_ID = "//span[@class='view-field view-i field_wheel_drive_id']"
+    CONDITION_TYPE_ID = "//span[@class='view-field view-i field_condition_type_id']"
+    HAS_DAMAGED_ID = "//span[@class='view-field view-i field_has_damaged_id']"
+    KILOMETRAGE = "//span[@class='view-field view-i field_kilometrage']"
+    FUEL_ID = "//span[@class='view-field view-i field_fuel_id']"
+    GEARBOX_ID = "//span[@class='view-field view-i field_gearbox_id']"
+    COLOR_ID = "//span[@class='view-field view-i field_color_id']"
+    ID = "//span[@class='view-field view-i field_id']"
+    PHOTO_LIST = "//div[@class='photo-list']/div/span/picture/img[contains(@src, 'https://autoplius-img.dgn.lt/') or contains(@data-src, 'https://autoplius-img.dgn.lt')]"
+    NEXT_PAGE_BUTTON = "//a[@class='fr btn button right-nav']"
+
+    

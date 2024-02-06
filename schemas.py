@@ -31,30 +31,30 @@ class TokenData(BaseModel):
 
 class CarAdvert(BaseModel):
     Skelbimo_id: int
-    Marke: str = None
-    Modelis: str = None
-    Telefono_nr: str = None
-    Kontakto_vardas: str = None
-    Miestas: str = None
-    Kaina: str = None
-    Metai: str = None
-    Pirma_registracija: str = None
-    Variklis: str = None
-    Kebulas: str = None
-    Ratai: str = None
-    Klimatas: str = None
-    Defektai: str = None
-    Rida: str = None
-    Kuras: str = None
-    Deze: str = None
-    Spalva: str = None
+    make: str = None
+    model: str = None
+    phone_number: str = None
+    contact_name: str = None
+    city: str = None
+    price: str = None
+    year: str = None
+    first_registration: str = None
+    engine_type: str = None
+    body_type: str = None
+    wheels_size: str = None
+    climate_control: str = None
+    defects: str = None
+    mileage: str = None
+    fuel_type: str = None
+    gearbox: str = None
+    color: str = None
     
     class Config:
         from_attributes = True
         
 
 class Car(BaseModel):
-    Marke: str = None
+    make: str = None
 
 class CarModel(BaseModel):
-    Modelis: str = None
+    model: str = None

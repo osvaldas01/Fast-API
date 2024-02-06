@@ -19,7 +19,7 @@ async def get_car_makes(
     current_user: int = Depends(oauth2.get_current_user)
 ):
     
-    makes = db.query(models.CarAdverts.Marke).distinct().all()
+    makes = db.query(models.CarAdverts.make).distinct().all()
     return makes
 
 @router.get('/models/', response_model=List[schemas.CarModel])
@@ -27,7 +27,7 @@ async def get_car_models(
     make: str,
     db: Session = Depends(get_db)
 ):
-    modelis = db.query(models.CarAdverts.Modelis).filter(models.CarAdverts.Marke.ilike(make)).distinct().all()
+    modelis = db.query(models.CarAdverts.model).filter(models.CarAdverts.make.ilike(make)).distinct().all()
     return modelis
 
 @router.get('/{car_id}', response_model=schemas.CarAdvert)
@@ -38,7 +38,7 @@ async def get_car_info(
     current_user: int = Depends(oauth2.get_current_user)
 ):
     
-    car = db.query(models.CarAdverts).filter(models.CarAdverts.Skelbimo_id == str(car_id)).first()
+    car = db.query(models.CarAdverts).filter(models.CarAdverts.advert_id == str(car_id)).first()
     num_of_pictures = len(os.listdir(f"static/Skelbimu_Images/{car_id}"))
     if not car:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Car with id {car_id} not found")
@@ -68,25 +68,25 @@ async def get_car_info(
     
     limit = 8
     offset = (page - 1) * limit
-    cars = db.query(models.CarAdverts).filter(models.CarAdverts.Marke.ilike(car_make))
+    cars = db.query(models.CarAdverts).filter(models.CarAdverts.make.ilike(car_make))
 
     if car_model:
-        cars = cars.filter(models.CarAdverts.Modelis.ilike(car_model))
+        cars = cars.filter(models.CarAdverts.model.ilike(car_model))
 
     if year_from:
-        cars = cars.filter(models.CarAdverts.Metai >= year_from)
+        cars = cars.filter(models.CarAdverts.year >= year_from)
     if year_to:
-        cars = cars.filter(models.CarAdverts.Metai <= year_to)
+        cars = cars.filter(models.CarAdverts.year <= year_to)
 
     if price_from:
-        cars = cars.filter(models.CarAdverts.Kaina >= price_from)
+        cars = cars.filter(models.CarAdverts.price >= price_from)
     if price_to:
-        cars = cars.filter(models.CarAdverts.Kaina <= price_to)
+        cars = cars.filter(models.CarAdverts.price <= price_to)
 
     if mileage_from:
-        cars = cars.filter(models.CarAdverts.Rida >= mileage_from)
+        cars = cars.filter(models.CarAdverts.mileage >= mileage_from)
     if mileage_to:
-        cars = cars.filter(models.CarAdverts.Rida <= mileage_to)
+        cars = cars.filter(models.CarAdverts.mileage <= mileage_to)
         
     pages_amount = cars.count() / limit
 

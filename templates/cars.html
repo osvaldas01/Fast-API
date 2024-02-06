@@ -21,21 +21,21 @@
     </header>
     <div class ="cars">
         {% for car in cars %}
-        <a href="../cars/{{ car.Skelbimo_id }}">
+        <a href="../cars/{{ car.advert_id }}">
             <div class="card">
-                <img src="/static/Skelbimu_images/{{ car.Skelbimo_id }}/1.jpg">
-                <h2>{{ car.Marke }} {{ car.Modelis }}</h2>
-                <p>Miestas: {{ car.Miestas }}</p>
-                {% if car.Telefono_nr == 'none' %}
+                <img src="/static/Skelbimu_images/{{ car.advert_id }}/1.jpg">
+                <h2>{{ car.make }} {{ car.model }}</h2>
+                <p>City: {{ car.city }}</p>
+                {% if car.phone_number == 'none' %}
                 <b class="sold">SOLD</b>
                 {% else %}
-                <p>Telefono nr: {{ car.Telefono_nr }}</p>
-                <p>Kaina: {{ car.Kaina }} €</p>
+                <p>Phone number: {{ car.phone_number }}</p>
+                <p>Price: {{ car.price }} €</p>
                 {% endif %}
-                <p>Metai: {{ car.Metai }}</p>
-                <p>Variklis: {{ car.Variklis }}</p>
-                <p>Kebulas: {{ car.Kebulas }}</p>
-                <p>Rida: {{ car.Rida }} km</p>
+                <p>Year: {{ car.year }}</p>
+                <p>Engine Type: {{ car.engine_type }}</p>
+                <p>Body Type: {{ car.body_type }}</p>
+                <p>Mileage: {{ car.mileage }} km</p>
             </div>
         </a>
         {% endfor %}

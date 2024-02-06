@@ -47,8 +47,8 @@ async function populateSelect() {
     if (carMakes) {
         carMakes.forEach(function (car) {
             var option = document.createElement("option");
-            option.value = car.Marke;
-            option.text = car.Marke;
+            option.value = car.make;
+            option.text = car.make;
             selectElement.appendChild(option);
         });
         fetchAndPopulateModels();
@@ -69,8 +69,8 @@ async function fetchAndPopulateModels() {
     if (carModels) {
         carModels.forEach(function (model) {
             var option = document.createElement("option");
-            option.value = model.Modelis;
-            option.text = model.Modelis.toUpperCase();
+            option.value = model.model;
+            option.text = model.model.toUpperCase();
             selectElement.appendChild(option);
         });
     }

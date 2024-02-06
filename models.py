@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, DATE
 from sqlalchemy.orm import relationship
 from database import Base
 from datetime import datetime
+
 
 user_advert_association = Table(
     'user_advert_association', 
@@ -29,22 +30,22 @@ class AdvertPackages(Base):
 class CarAdverts(Base):
     __tablename__ = 'car_adverts'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    Marke = Column(String, default=None)
-    Modelis = Column(String, default=None)
-    Telefono_nr = Column(String, default=None)
-    Kontakto_vardas = Column(String, default=None)
-    Miestas = Column(String, default=None)
-    Kaina = Column(String, default=None)
-    Metai = Column(String, default=None)
-    Pirma_registracija = Column(String, default=None)
-    Variklis = Column(String, default=None)
-    Kebulas = Column(String, default=None)
-    Ratai = Column(String, default=None)
-    Klimatas = Column(String, default=None)
-    Defektai = Column(String, default=None)
-    Rida = Column(String, default=None)
-    Kuras = Column(String, default=None)
-    Deze = Column(String, default=None)
-    Spalva = Column(String, default=None)
-    Skelbimo_id = Column(String, default=None, unique=True)
-    URL = Column(String, default=None)
+    make = Column(String, default=None)
+    model = Column(String, default=None)
+    phone_number = Column(String, default=None)
+    contact_name = Column(String, default=None)
+    city = Column(String, default=None)
+    price = Column(Integer, default=None)
+    year = Column(Integer, default=None)
+    first_registration = Column(String, default=None)
+    engine_type = Column(String, default=None)
+    body_type = Column(String, default=None)
+    wheels_size = Column(String, default=None)
+    climate_control = Column(String, default=None)
+    defects = Column(String, default=None)
+    mileage = Column(Integer, default=None)
+    fuel_type = Column(String, default=None)
+    gearbox = Column(String, default=None)
+    color = Column(String, default=None)
+    advert_id = Column(String, default=None, unique=True)
+    url = Column(String, default=None)
