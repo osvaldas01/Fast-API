@@ -37,7 +37,6 @@ class SCRAPER:
 
     def list_of_urls(self):
         self.list_urls = []
-        self.idlistas = []
         a = 0
         if a == 0:
             self.click_cookie()
@@ -54,7 +53,7 @@ class SCRAPER:
 
     def pull_car_info_mobile(self):
         marke, modelis = self.driver.find_element('xpath', "//h1").text.split(' ', 1)
-        setas = {
+        list_of_set = {
             'make': marke,
             'model': modelis,
             'phone_number': self.try_finding_element_withoutsplitting(xPath.CONTACT_PHONE),
@@ -78,44 +77,44 @@ class SCRAPER:
 
                  
         try:
-            self.db.add(CarAdverts(**setas))
+            self.db.add(CarAdverts(**list_of_set))
             self.db.commit()
             self.download_photos()
         finally:
             self.db.close()
-        return setas
+        return list_of_set
 
-    def try_finding_element_withoutsplitting(self, xpathas, defaultas = "none"):
+    def try_finding_element_withoutsplitting(self, xpathas, default_value = "none"):
         try:
             return self.driver.find_element('xpath', xpathas).text
         except:
-            return defaultas
+            return default_value
         
-    def try_finding_element(self, xpathas, defaultas = "none"):
+    def try_finding_element(self, xpathas, default_value = "none"):
         try:
             return self.driver.find_element('xpath', xpathas).text.split(': ', 1)[1]
         except:
-            return defaultas
+            return default_value
 
     def find_photos(self):
         piclist = []
         image_urls = [element.get_attribute("src") or element.get_attribute("data-src")
                       for element in
                       self.driver.find_elements('xpath', xPath.PHOTO_LIST)]
-        for linkas in image_urls:
-            piclist.append(linkas)
+        for url in image_urls:
+            piclist.append(url)
         return piclist
 
 
     def next_page_mobile(self):
         try:
-            linkas = self.driver.find_element('xpath', xPath.NEXT_PAGE_BUTTON).get_attribute('href')
+            url = self.driver.find_element('xpath', xPath.NEXT_PAGE_BUTTON).get_attribute('href')
         except NoSuchElementException:
-            linkas = None
-        return linkas
+            url = None
+        return url
 
     @measure_time
-    def do_something(self):
+    def iterating_pages(self):
         max_iterations = 200
         iteration = 0
         while True:
@@ -152,6 +151,6 @@ class SCRAPER:
                 continue
 
 
-linkas = input('Iveskite URL: ')
-scraperis = SCRAPER(linkas)
-scraperis.do_something()
+url = input('Iveskite URL: ')
+scraper = SCRAPER(url)
+scraper.iterating_pages()
