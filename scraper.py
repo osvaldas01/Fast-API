@@ -4,7 +4,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from sqlalchemy.orm import Session
 from models import CarAdverts
-from database import get_db
+from database import SessionLocal
 import time
 import requests
 import os
@@ -16,7 +16,7 @@ class SCRAPER:
         self.manager = ChromeService(ChromeDriverManager().install()) #Chrome manageris
         self.driver = webdriver.Chrome(service=self.manager) #chrome driveris
         self.driver.get(self.url)
-        self.db = get_db()
+        self.db = SessionLocal()
 
     def measure_time(func):
         def wrapper(*args, **kwargs):
@@ -80,9 +80,12 @@ class SCRAPER:
                  'Skelbimo_id':self.try_finding_element("//span[@class='view-field view-i field_id']")[1:],
                  'URL': self.driver.current_url
                  }
-        with self.db.begin():
+        try:
             self.db.add(CarAdverts(**setas))
-        self.download_photos()
+            self.db.commit()
+            self.download_photos()
+        finally:
+            self.db.close()
         return setas
 
     def try_finding_element_withoutsplitting(self, xpathas, defaultas = "none"):
@@ -146,7 +149,7 @@ class SCRAPER:
     def download_photos(self):
         url_parts = urlparse(self.driver.current_url)
         advert_id = os.path.basename(url_parts.path).split('-')[-1].split('.')[0]
-        folder_name = 'Skelbimu_Images/' +  advert_id
+        folder_name = 'static/Skelbimu_Images/' +  advert_id
         os.makedirs(folder_name, exist_ok=True)
         photo_counter = 1
         for link in self.find_photos():
