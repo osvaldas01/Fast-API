@@ -4,7 +4,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from utils.models import CarAdverts
 from utils.database import SessionLocal
-from paths import xPath
+from utils.paths import xPath
 import time
 import requests
 import os
