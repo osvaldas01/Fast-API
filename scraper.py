@@ -14,9 +14,7 @@ class SCRAPER:
     def __init__(self, url):
         self.url = url
         self.manager = ChromeService(ChromeDriverManager().install())
-        self.options = webdriver.ChromeOptions() 
-        self.options.add_argument(r"load-extension=C:\Users\matas\AppData\Local\Google\Chrome\User Data\Default\Extensions\cjpalhdlnbpafiamejdnhcphjbkeiagm\1.55.0_0")
-        self.driver = webdriver.Chrome(service=self.manager, options=self.options)
+        self.driver = webdriver.Chrome(service=self.manager)
         self.driver.get(self.url)
         self.db = SessionLocal()
         self.a = 0
