@@ -1,6 +1,5 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from datetime import datetime
 
 class AdvertPackage(BaseModel):
     name: str
@@ -9,32 +8,18 @@ class AdvertPackage(BaseModel):
     class Config:
         from_attributes = True
 
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-        
 class UserOut(BaseModel):
     email: EmailStr
     credits: int
     packages: list[AdvertPackage]
     
     class Config:
-        from_attributes = True
+        from_attributes = True    
 
-class UserRegister(BaseModel):
-    email: EmailStr
-        
-class UserLogin(BaseModel):
-    email: EmailStr
-    password: str
     
 class UserOutAfterPasswordChange(BaseModel):
     email: EmailStr
     msg: str
-
-class UserPasswordChange(BaseModel):
-    current_password: str
-    new_password: str
     
 class Token(BaseModel):
     access_token: str
@@ -45,27 +30,31 @@ class TokenData(BaseModel):
     user_id: Optional[int] = None
 
 class CarAdvert(BaseModel):
-    Marke: str = None
-    Modelis: str = None
-    Telefono_nr: str = None
-    Kontakto_vardas: str = None
-    Miestas: str = None
-    Kaina: str = None
-    Metai: str = None
-    Pirma_registracija: str = None
-    Variklis: str = None
-    Kebulas: str = None
-    Ratai: str = None
-    Klimatas: str = None
-    Defektai: str = None
-    Rida: str = None
-    Kuras: str = None
-    Deze: str = None
-    Spalva: str = None
+    Skelbimo_id: int
+    make: str = None
+    model: str = None
+    phone_number: str = None
+    contact_name: str = None
+    city: str = None
+    price: str = None
+    year: str = None
+    first_registration: str = None
+    engine_type: str = None
+    body_type: str = None
+    wheels_size: str = None
+    climate_control: str = None
+    defects: str = None
+    mileage: str = None
+    fuel_type: str = None
+    gearbox: str = None
+    color: str = None
     
     class Config:
         from_attributes = True
+        
 
 class Car(BaseModel):
-    Marke: str = None
-    Modelis: Optional[str] = None
+    make: str = None
+
+class CarModel(BaseModel):
+    model: str = None

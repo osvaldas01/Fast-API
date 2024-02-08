@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div>
+        <nav class="nav-bar">
+            {% if current_user %}
+                <b>Logged in as: {{ current_user.email }}</b>
+                {% if current_user.credits %}
+                    <b>Balance: {{ current_user.credits }} credits</b>
+                {% else %}
+                    <b>Balance: 0 credits</b>
+                {% endif %}
+            {% endif %}
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="../store/buycredits/">Buy Credits</a>
+            <a href="/logout/">Logout</a>
+        </nav>  
+        <div class="store">
+            
+            {% for package in packages %}
+                <div class="package">
+                    <h2>{{ package.name }}</h2>
+                    <p>{{ package.price }}</p>
+                    {% if package in current_user.advert_packages %}
+                        <p>Already Owned</p>
+                    {% else %}
+                        <form method="post" action="/store/{{ package.id }}" onsubmit="event.preventDefault(); buyPackage(event)">
+                            <input type="hidden" name="package_id" value="{{ package.id }}">
+                            <button type="submit" id="buyButton">BUY PACKAGE</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+            <script src="../static/scripts/scripts_store.js"></script>
+        </div>
+    </div>
+</body>
+</html>

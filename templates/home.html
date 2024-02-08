@@ -1,0 +1,90 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div>
+        <nav class="nav-bar">
+        <div>
+            {% if user %}
+                <b>Logged in as: {{ user }}</b>
+            {% endif %}
+        </div>
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="store/buycredits/">Buy Credits</a>
+            <a href="/logout/">Logout</a>
+        </nav>
+    </div>
+    <div class="SearchCar">
+
+    <h1>Search for a car</h1>
+    <label for="carMakeSelect">Make:</label>
+    <select id="carMakeSelect" onchange="fetchAndPopulateModels()">
+    </select>
+    <label for="carModelSelect">Model:</label>
+    <select id="carModelSelect">
+        <option value="all">-</option>
+    </select>
+    <label for="carPriceSelectFrom">Price:</label>
+    <br>
+    <select id="carPriceSelectFrom">
+        <option value="all">-</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+        <option value="5000">5000</option>
+        <option value="10000">10000</option>
+        <option value="20000">20000</option>
+        <option value="50000">50000</option>
+    </select>
+    <select id="carPriceSelectTo">
+        <option value="all">-</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+        <option value="5000">5000</option>
+        <option value="10000">10000</option>
+        <option value="20000">20000</option>
+        <option value="50000">50000</option>
+    </select>
+    <br>
+    <label for="carMileageSelectFrom">Mileage:</label>
+    <br>
+    <select id="carMileageSelectFrom">
+        <option value="all">-</option>
+        <option value="50000">50000</option>
+        <option value="100000">100000</option>
+        <option value="200000">200000</option>
+        <option value="300000">300000</option>
+    </select>
+    <select id="carMileageSelectTo">
+        <option value="all">-</option>
+        <option value="50000">50000</option>
+        <option value="100000">100000</option>
+        <option value="200000">200000</option>
+        <option value="300000">300000</option>
+    </select>
+    <br>
+    <label for="carYearSelectFrom">Year:</label>
+    <br>
+    <select id="carYearSelectFrom">
+        <option value="all">-</option>
+    </select>
+    <select id="carYearSelectTo">
+        <option value="all">-</option>
+    </select>
+    <br>
+    <br>
+    
+    
+    <button type="submit" onclick="search()">Search</button>
+</div>
+
+    <script src="../static/scripts/scripts.js"></script>
+</body>
+</html>
+

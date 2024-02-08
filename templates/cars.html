@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            {% if current_user %}
+                <b>Logged in as: {{ current_user.email }}</b>
+                <b>Balance: {{ current_user.credits }} credits</b>
+            {% endif %}
+            <a href="/" class="home"><h2>Home</h2></a>
+            <a href="/users/">View User</a>
+            <a href="/store/">Store</a>
+            <a href="/logout/">Logout</a>
+        </nav>  
+    </header>
+    <div class ="cars">
+        {% for car in cars %}
+        <a href="../cars/{{ car.advert_id }}">
+            <div class="card">
+                <img src="/static/Skelbimu_images/{{ car.advert_id }}/1.jpg">
+                <h2>{{ car.make }} {{ car.model }}</h2>
+                <p>City: {{ car.city }}</p>
+                {% if car.phone_number == 'none' %}
+                <b class="sold">SOLD</b>
+                {% else %}
+                <p>Phone number: {{ car.phone_number }}</p>
+                <p>Price: {{ car.price }} €</p>
+                {% endif %}
+                <p>Year: {{ car.year }}</p>
+                <p>Engine Type: {{ car.engine_type }}</p>
+                <p>Body Type: {{ car.body_type }}</p>
+                <p>Mileage: {{ car.mileage }} km</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="pages">
+        {% for page in range(pages_amount) %}
+            <a class="pageNumbers" href="../cars/?car_make={{ car_make }}&page={{ page+1 }}">
+                <button class = "pageButton">
+                    <div class="page">
+                        <b>{{ page+1 }}</b>
+                    </div>
+                </button>
+            </a>
+        {% endfor %}
+    </div>
+
+    </div>
+</body>
+</html>
