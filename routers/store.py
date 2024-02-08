@@ -1,10 +1,10 @@
 from fastapi import Depends, HTTPException, status, APIRouter, Form
 from sqlalchemy.orm import Session
-from database import get_db
+from utils.database import get_db
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from typing import List
-import models, schemas, oauth2
+import utils.models as models, utils.schemas as schemas, utils.oauth2 as oauth2
 
 
 templates = Jinja2Templates(directory="templates")

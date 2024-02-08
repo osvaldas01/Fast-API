@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException, status, APIRouter, Query, Request
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
-import models, schemas, oauth2
-from database import get_db
+import utils.models as models, utils.schemas as schemas, utils.oauth2 as oauth2
+from utils.database import get_db
 from typing import List
 from fastapi import Query
 import os

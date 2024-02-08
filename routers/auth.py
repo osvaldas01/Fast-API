@@ -3,12 +3,12 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, Response
 from sqlalchemy.orm import Session
-from database import get_db
+from utils.database import get_db
 from pydantic import EmailStr
-from utils import verify_password, hash_password
-import schemas
-import models
-import oauth2
+from utils.utils import verify_password, hash_password
+import utils.schemas as schemas
+import utils.models as models
+import utils.oauth2 as oauth2
  
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(

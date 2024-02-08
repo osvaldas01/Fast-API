@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import models
-from database import engine, get_db
+import utils.models as models
+from utils.database import engine, get_db
 from routers import user, auth, car, store
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates

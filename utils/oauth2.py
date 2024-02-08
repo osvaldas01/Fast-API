@@ -1,8 +1,8 @@
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
-from schemas import TokenData
-from database import get_db
-from models import User
+from utils.schemas import TokenData
+from utils.database import get_db
+from utils.models import User
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
