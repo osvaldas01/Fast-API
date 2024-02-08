@@ -1,4 +1,4 @@
-#kazkass
+#kazkas
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -104,9 +104,7 @@ class SCRAPER:
 
     def find_photos(self):
         piclist = []
-        image_urls = [element.get_attribute("src") or element.get_attribute("data-src")
-                      for element in
-                      self.driver.find_elements('xpath', xPath.PHOTO_LIST)]
+        image_urls = [element.get_attribute("src") or element.get_attribute("data-src") for element in self.driver.find_elements('xpath', xPath.PHOTO_LIST)]
         for url in image_urls:
             piclist.append(url)
         return piclist
