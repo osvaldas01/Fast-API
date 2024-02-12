@@ -20,8 +20,6 @@ class SCRAPER:
         self.a = 0
         self.max_iterations = 200
         self.iteration = 0
-        self.photo_counter = 1
-
 
     def measure_time(func):
         def wrapper(*args, **kwargs):
@@ -137,6 +135,7 @@ class SCRAPER:
         print('Done!')
 
     def download_photos(self):
+        photo_counter = 1
         url_parts = urlparse(self.driver.current_url)
         advert_id = os.path.basename(url_parts.path).split('-')[-1].split('.')[0]
         folder_name = 'static/Skelbimu_Images/' +  advert_id
@@ -144,10 +143,10 @@ class SCRAPER:
         for link in self.find_photos():
             try:
                 r = requests.get(link)
-                filename = os.path.join(folder_name, f"{self.photo_counter}.jpg")
+                filename = os.path.join(folder_name, f"{photo_counter}.jpg")
                 with open(filename, 'wb') as f:
                     f.write(r.content)
-                self.photo_counter += 1  
+                photo_counter += 1  
             except requests.exceptions.RequestException as e:
                 continue
 
